@@ -9,19 +9,40 @@ const signToken = (id) => {
   });
 };
 
+const getUser = async (req, res) => {
+  try {
+    const users = await user.findAll({
+      attributes: ['nama', 'email'], // Only return safe fields, excluding password
+    });
+
+    return res.status(200).json({
+      status: "Success",
+      message: "Berhasil mengambil data pengguna",
+      data: users
+    });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return res.status(500).json({
+      status: "Error",
+      message: "Terjadi kesalahan saat mengambil data pengguna",
+      errors: error.message
+    });
+  }
+};
+
 const buatuser = async (req, res) => {
   try {
       const { errors } = loginValidation.validateCreatePayload(req.body);
-      if (errors) {
-          return res.status(400).json({ errors });
-      }
+      // if (errors) {
+      //     return res.status(400).json({ errors });
+      // }
 
-      const { nama, email, password, passwordConfirm } = req.body;
-      if (password !== passwordConfirm) {
-          return res.status(400).json({
-              message: 'Password Tidak Sama',
-          });
-      }
+      // const { nama, email, password, passwordConfirm } = req.body;
+      // if (password !== passwordConfirm) {
+      //     return res.status(400).json({
+      //         message: 'Password Tidak Sama',
+      //     });
+      // }
 
       // Hanya simpan fields yang ada di database
       await user.create({
@@ -88,5 +109,6 @@ const loginUser = async (req, res) => {
 
 module.exports = {
   buatuser,
-  loginUser
+  loginUser,
+  getUser
 };

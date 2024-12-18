@@ -16,13 +16,6 @@ const buatuser = async (req, res) => {
           return res.status(400).json({ errors });
       }
 
-      // const cekEmail = await user.findOne({ where: { email: req.body.email } });
-      // if (cekEmail) {
-      //     return res.status(400).json({
-      //         message: 'Email sudah terdaftar, silakan gunakan email lain.',
-      //     });
-      // }
-
       const { nama, email, password, passwordConfirm } = req.body;
       if (password !== passwordConfirm) {
           return res.status(400).json({
@@ -30,11 +23,11 @@ const buatuser = async (req, res) => {
           });
       }
 
+      // Hanya simpan fields yang ada di database
       await user.create({
           nama,
           email,
-          password,
-          passwordConfirm,
+          password
       });
 
       return res.status(200).json({
@@ -42,6 +35,7 @@ const buatuser = async (req, res) => {
           message: 'Daftar Pengguna Berhasil!',
       });
   } catch (error) {
+      console.error('Error creating user:', error); // Tambahkan log untuk debugging
       return res.status(500).json({
           success: false,
           message: 'Terjadi kesalahan saat memproses data.',
@@ -49,7 +43,6 @@ const buatuser = async (req, res) => {
       });
   }
 };
-
 
 
 

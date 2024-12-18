@@ -1,5 +1,5 @@
 const { create, update } = require("./schema");
-const {user} = require("../../models");
+const { user } = require("../../models");
 const loginValidation = {
   validateCreatePayload : async (payload) => {
     const validationResult = create.validate(payload); 

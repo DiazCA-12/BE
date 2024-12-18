@@ -33,18 +33,18 @@ const getUser = async (req, res) => {
 const buatuser = async (req, res) => {
   try {
       const { errors } = loginValidation.validateCreatePayload(req.body);
-      // if (errors) {
-      //     return res.status(400).json({ errors });
-      // }
+      if (errors) {
+          return res.status(400).json({ errors });
+      }
 
-      // const { nama, email, password, passwordConfirm } = req.body;
-      // if (password !== passwordConfirm) {
-      //     return res.status(400).json({
-      //         message: 'Password Tidak Sama',
-      //     });
-      // }
+      const { nama, email, password, passwordConfirm } = req.body;
+      console.log("CEK NAMA", req.body.nama);
+      if (password !== passwordConfirm) {
+          return res.status(400).json({
+              message: 'Password Tidak Sama',
+          });
+      }
 
-      // Hanya simpan fields yang ada di database
       await user.create({
           nama,
           email,
